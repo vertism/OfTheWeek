@@ -1,1 +1,5 @@
-<img src="<%= @imageURL %>" />
+<% if @imageURL.nil? %>
+  Sorry, there are no results for your search 
+<% else %>
+  <img src="<%= @imageURL %>" />
+<% end %>

@@ -5,48 +5,64 @@ class HomeController < ApplicationController
   end
   
   def search
-    searchterms = params[:search_term]
-    @title = searchterms.split("+").join(" ") + " of the week"
-    @imageURL = getimageurl(searchterms)
-    if @imageURL.nil?
-      render :inline =>
-        "Sorry, there are no results for your search"
+    searchterm = params[:search_term]
+    year = params[:year] || Time.now.to_date.cwyear
+    week = params[:week] || Time.now.to_date.cweek
+    
+    searchterm = searchterm.downcase.gsub(/[^a-z0-9]/, '')
+
+    @title = searchterm + " of the week"
+    @imageURL = nil
+    
+    photo = getimageurl(searchterm, year, week)
+    if !photo.blank?
+      @imageURL = photo.url
     end
   end
   
-  def getimageurl(search)
-    file = Rails.root.join('config','flickr.yml').to_s
-    flickr = Flickr.new(file)
+  def getimageurl(tag, year, week)
+    dates = getDates(year, week)
+  
+    photo = Photo.where(:year => year, :week => week, :tag => tag).first
     
-    tags = search.split("+").join(",")
+    if photo.blank? and !dates.nil?
     
-    photos = flickr.photos.search(
-      :tags => tags,
-      :tag_mode => 'all',
-      :sort => 'interestingness-desc',
-      :content_type => 1,
-      :min_upload_date => getDate(1), :max_upload_date => getDate(2),
-      :per_page => 1
-    )
+      file = Rails.root.join('config','flickr.yml').to_s
+      flickr = Flickr.new(file)
+          
+      photos = flickr.photos.search(
+        :tags => tag,
+        :tag_mode => 'all',
+        :sort => 'interestingness-desc',
+        :content_type => 1,
+        :min_upload_date => dates[:min], :max_upload_date => dates[:max],
+        :per_page => 1
+      )
+      
+      photo = photos.first
     
-    if photos.first.nil?
-      nil
-    else
-      photos.first.url
+      unless photos.first.nil?
+        begin
+          photo = Photo.create!(:year => year, :week => week, :tag => tag, :url => photos.first.url)
+          photo.save
+        rescue
+        end
+      end
     end
+    
+    photo
   end
   
-  def getDate(type)
-    now = Time.now.to_date
-    minDate = now - 7 - now.cwday + 1
-    maxDate = minDate + 7
+  def getDates(year, week)
+    begin 
+      year = year.to_i
+      week = week.to_i
+      
+      minDate = Date.commercial(year, week, 1) - 7
+      maxDate = Date.commercial(year, week, 1)
     
-    case type
-    when 1 #min
-      minDate.strftime('%s')
-    when 2 #max
-      maxDate.strftime('%s')
-    else
+      {:min => minDate.strftime('%s'), :max => maxDate.strftime('%s')}
+    rescue
       nil
     end
   end
