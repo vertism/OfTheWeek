@@ -1,4 +1,10 @@
 OfTheWeek::Application.routes.draw do
+  get "flickr/create"
+
+  get "home/index"
+  
+  match "/:search_term" => 'home#search'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
