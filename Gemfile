@@ -5,8 +5,7 @@ gem 'rails', '3.1.3'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-gem 'pg'
-
+gem 'sqlite3'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -18,7 +17,6 @@ end
 
 gem 'jquery-rails'
 
-gem 'nokogiri'
 gem 'flickr_fu'
 
 # To use ActiveModel has_secure_password
