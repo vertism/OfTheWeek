@@ -1,5 +1,15 @@
-<% if @imageURL.nil? %>
-  Sorry, there are no results for your search 
-<% else %>
-  <img src="<%= @imageURL %>" />
-<% end %>
+<div id="container">
+  <% if @imageURL.nil? %>
+    Sorry, there are no results for your search 
+  <% else %>
+    <h2>
+      <%= @title %>
+      <% if !@term.empty? %>
+        (<%= @term %>)
+      <% end %>
+    </h2>
+    <div class="mainimage">
+      <img src="<%= @imageURL %>" />
+    </img>
+  <% end %>
+</div>

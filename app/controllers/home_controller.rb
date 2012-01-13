@@ -8,24 +8,27 @@ class HomeController < ApplicationController
     searchterm = params[:search_term]
     year = params[:year] || Time.now.to_date.cwyear
     week = params[:week] || Time.now.to_date.cweek
+    dates = getDates(year, week)
     
-    searchterm = searchterm.downcase.gsub(/[^a-z0-9]/, '')
+    if !dates.nil?    
+      searchterm = searchterm.downcase.gsub(/[^a-z0-9]/, '')
 
-    @title = searchterm + " of the week"
-    @imageURL = nil
+      @title = searchterm + " of the week"
+      @imageURL = nil
+      @term = dates[:term]
     
-    photo = getimageurl(searchterm, year, week)
-    if !photo.blank?
-      @imageURL = photo.url
+      photo = getimageurl(searchterm, dates)
+      
+      if !photo.blank?
+        @imageURL = photo.url
+      end
     end
   end
   
-  def getimageurl(tag, year, week)
-    dates = getDates(year, week)
-  
-    photo = Photo.where(:year => year, :week => week, :tag => tag).first
+  def getimageurl(tag, dates)  
+    photo = Photo.where(:year => dates[:year], :week => dates[:week], :tag => tag).first
     
-    if photo.blank? and !dates.nil?
+    if photo.blank?
     
       file = Rails.root.join('config','flickr.yml').to_s
       flickr = Flickr.new(file)
@@ -43,7 +46,7 @@ class HomeController < ApplicationController
     
       unless photos.first.nil?
         begin
-          photo = Photo.create!(:year => year, :week => week, :tag => tag, :url => photos.first.url)
+          photo = Photo.create!(:year => dates[:year], :week => dates[:week], :tag => tag, :url => photos.first.url)
           photo.save
         rescue
         end
@@ -60,8 +63,14 @@ class HomeController < ApplicationController
       
       minDate = Date.commercial(year, week, 1) - 7
       maxDate = Date.commercial(year, week, 1)
+      
+      if Time.now.to_date.cwyear == year && Time.now.to_date.cweek == week
+        term = ""
+      else
+        term = maxDate.strftime('%d %b %Y')
+      end
     
-      {:min => minDate.strftime('%s'), :max => maxDate.strftime('%s')}
+      {:week => week, :year => year, :min => minDate.strftime('%s'), :max => maxDate.strftime('%s'), :term => term}
     rescue
       nil
     end
