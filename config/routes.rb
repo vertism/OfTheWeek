@@ -1,7 +1,6 @@
 OfTheWeek::Application.routes.draw do
-  get "flickr/create"
 
-  get "home/index"
+  root :to => 'home#index'
   
   match "/:search_term" => 'home#search'
 
