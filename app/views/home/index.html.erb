@@ -4,11 +4,17 @@
   
   <h2>Popular Photos This Week</h2>
   
-  <% @popular.each do |photo| %>
+  <% @popular.each_with_index do |photo, index| %>
+    <% if index % 6 == 0 %>
+      <div class="photos_row">
+    <% end %>
     <span class="photo_thumbnail">
       <a href="<%= request.url + photo.tag %>">
         <img src="<%= photo.url_thumbnail %>">
       </a>
     </span>
+    <% if index % 6 == 5 %>
+      </div>
+    <% end %>
   <% end %>
 </div>

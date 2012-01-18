@@ -25,6 +25,7 @@ h2 {
 }
 
 #header {
+	min-width:480px;
 	height:38px;
 	margin:3px 0 3px 0;
 	border-bottom:3px dotted black;
@@ -38,7 +39,7 @@ h2 {
 	
 	.logo {
 		float:left;
-		width:300px;
+		width:220px;
 		font-size:32px;
 		color:#FF4F00;
 	}
@@ -46,7 +47,7 @@ h2 {
 	.search {
 		text-align:right;
 		float:right;
-		width:500px;
+		width:260px;
 		margin-top:4px;
 	}
 }
@@ -61,13 +62,18 @@ h2 {
 		text-decoration:none;
 	}
 	
-	.photo_thumbnail {
-		float:left;
-		margin:5px;
-		box-shadow: 3px 3px 3px #AAA;
-		-moz-box-shadow: 3px 3px 3px #AAA;
-		-webkit-box-shadow: 3px 3px 3px #AAA;
+	.photos_row {
+		clear:both;
+		
+		.photo_thumbnail {
+			float:left;
+			margin:5px;
+			box-shadow: 3px 3px 3px #AAA;
+			-moz-box-shadow: 3px 3px 3px #AAA;
+			-webkit-box-shadow: 3px 3px 3px #AAA;
+		}
 	}
+
 
 	.mainimage {
 	  float:left;
