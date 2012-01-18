@@ -3,19 +3,53 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 body {
-	margin:10px 0px;
-	padding:0px;
-	background:image-url("handmadepaper.png")
+	margin:0 10px;
+	padding:0;
+	font-family: 'Montserrat', sans-serif;
+	background:image-url("handmadepaper.png");
+	font-size:18px;
+	color:black;
 }
+
+img {  
+	vertical-align:bottom;
+	border-style: none;
+}
+
+h2 {
+	color:#00BB3F;
+}
+
+#header {
+	height:40px;
+	margin:3px 0 3px 0;
+	border-bottom:3px dotted black;
+	
+	a {
+		text-decoration:none;
+		color:black;
+	}
+	
+	.logo {
+		font-size:32px;
+		color:#FF2800;
+	}
+}
+
+
 
 #container {
 	width:960px;
 	margin:0px auto;
-	padding:10px;
+	padding:0;
 }
 
-img {
-  vertical-align:bottom;
+.photo_thumbnail {
+	float:left;
+	margin:5px;
+	box-shadow: 3px 3px 3px #AAA;
+	-moz-box-shadow: 3px 3px 3px #AAA;
+	-webkit-box-shadow: 3px 3px 3px #AAA;
 }
 
 .mainimage {

@@ -6,7 +6,7 @@ class HomeController < ApplicationController
       redirect_to '/' + params[:search_term]
     end
         
-    @popular = Photo.where(:year => 2012).where(:week => 3).order("views DESC").limit(3)
+    @popular = Photo.where(:year => 2012).where(:week => 3).order("views DESC").limit(18)
   end
   
   def search

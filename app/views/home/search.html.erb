@@ -10,14 +10,17 @@
     </h2>
     <div>
       <div class="mainimage">
-        <img src="<%= @imageURL_medium %>" />
+        <a href="<%= @imageURL_large %>">
+          <img src="<%= @imageURL_medium %>" />
+        </a>
       </div>
       <div class="mainImageData">
-        <%= @views %> view<% if @views != 1 %>s<% end %> | <a href="<%= @imageURL_large %>">large</a> 
+        <%= @views %> view<% if @views != 1 %>s<% end %>
         <br />
-        <a href="<%= @lastweekURL %>">previous</a>
-        <% if not @nextweekURL.nil? %>
-          |
+        <a href="<%= @lastweekURL %>">previous</a> |
+        <% if @nextweekURL.nil? %>
+          next
+        <% else %>
           <a href="<%= @nextweekURL %>">next</a>   
         <% end %>
       </div>

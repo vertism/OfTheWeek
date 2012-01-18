@@ -1,17 +1,23 @@
 <div id="container">
   <% @title="Of The Week" %>
-  <h2>
-    Find the best photo of the week for any topic
+  <h2>Find the best photo of the week for any subject</h2>
     <%= form_tag do %>
       <%= text_field_tag "search_term" %>
       <%= submit_tag "Search" %>
     <% end %>
-  </h2>
+  
 
-  <h2>Popular</h2>
+  <p>
+    <br />
+  </p>
+  
+  <h2>Popular Photos This Week</h2>
   
   <% @popular.each do |photo| %>
-    <a href="<%= request.url + photo.tag %>"><%= photo.tag %></a>
-    <br />
+    <span class="photo_thumbnail">
+      <a href="<%= request.url + photo.tag %>">
+        <img src="<%= photo.url_thumbnail %>">
+      </a>
+    </span>
   <% end %>
 </div>
