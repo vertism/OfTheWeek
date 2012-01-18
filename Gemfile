@@ -23,6 +23,7 @@ end
 gem 'jquery-rails'
 gem 'flickr_fu'
 gem 'thin'
+gem 'dalli'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
