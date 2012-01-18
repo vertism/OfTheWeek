@@ -1,5 +1,5 @@
 <div id="container">
-  <% if @imageURL.nil? %>
+  <% if @imageURL_medium.nil? %>
     Sorry, there are no results for your search 
   <% else %>
     <h2>
@@ -8,8 +8,19 @@
         (<%= @term %>)
       <% end %>
     </h2>
-    <div class="mainimage">
-      <img src="<%= @imageURL %>" />
-    </img>
+    <div>
+      <div class="mainimage">
+        <img src="<%= @imageURL_medium %>" />
+      </div>
+      <div class="mainImageData">
+        <%= @views %> view<% if @views != 1 %>s<% end %> | <a href="<%= @imageURL_large %>">large</a> 
+        <br />
+        <a href="<%= @lastweekURL %>">previous</a>
+        <% if not @nextweekURL.nil? %>
+          |
+          <a href="<%= @nextweekURL %>">next</a>   
+        <% end %>
+      </div>
+    </div>
   <% end %>
 </div>

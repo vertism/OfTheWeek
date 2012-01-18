@@ -11,15 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120113190856) do
+ActiveRecord::Schema.define(:version => 20120118092524) do
 
   create_table "photos", :force => true do |t|
     t.integer  "year"
-    t.string   "url"
+    t.string   "url_square"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "week"
     t.string   "tag"
+    t.string   "url_original"
+    t.string   "url_thumbnail"
+    t.integer  "views"
   end
+
+  add_index "photos", ["tag"], :name => "index_photos_on_tag"
+  add_index "photos", ["week"], :name => "index_photos_on_week"
+  add_index "photos", ["year"], :name => "index_photos_on_year"
 
 end

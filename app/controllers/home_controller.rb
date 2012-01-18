@@ -2,6 +2,11 @@ require 'flickr_fu'
 
 class HomeController < ApplicationController
   def index
+    if !params[:search_term].nil?
+      redirect_to '/' + params[:search_term]
+    end
+        
+    @popular = Photo.where(:year => 2012).where(:week => 3).order("views DESC").limit(3)
   end
   
   def search
@@ -20,7 +25,11 @@ class HomeController < ApplicationController
       photo = getimageurl(searchterm, dates)
       
       if !photo.blank?
-        @imageURL = photo.url
+        @imageURL_medium = photo.url_square
+        @imageURL_large = photo.url_original
+        @views = photo.views
+        @lastweekURL = getURL(searchterm, year, week, -1) 
+        @nextweekURL = getURL(searchterm, year, week, 1)
       end
     end
   end
@@ -30,6 +39,7 @@ class HomeController < ApplicationController
     
     if photo.blank?
     
+      #TODD: check out flickraw as an alternative
       file = Rails.root.join('config','flickr.yml').to_s
       flickr = Flickr.new(file)
           
@@ -41,16 +51,26 @@ class HomeController < ApplicationController
         :min_upload_date => dates[:min], :max_upload_date => dates[:max],
         :per_page => 1
       )
-      
-      photo = photos.first
     
-      unless photos.first.nil?
+      unless photos.nil?
         begin
-          photo = Photo.create!(:year => dates[:year], :week => dates[:week], :tag => tag, :url => photos.first.url)
+          large = photos.first.url(:original) || photos.first.url(:large)
+          photo = Photo.create!(
+            :year => dates[:year], 
+            :week => dates[:week], 
+            :tag => tag, 
+            :url_square => photos.first.url(:medium), 
+            :url_thumbnail => photos.first.url(:thumbnail), 
+            :url_original => large,
+            :views => 1
+          )
           photo.save
         rescue
         end
       end
+    else
+      photo.views += 1
+      photo.save
     end
     
     photo
@@ -74,6 +94,21 @@ class HomeController < ApplicationController
     rescue
       nil
     end
+  end
+  
+  def getURL(tag, currentYear, currentWeek, offset) 
+    newDate = Date.commercial(currentYear.to_i, currentWeek.to_i) + (offset * 7)
+    newWeek = newDate.cweek
+    newYear = newDate.cwyear
+    
+    actualYear = Time.now.to_date.cwyear
+    actualWeek = Time.now.to_date.cweek
+    
+    if newYear > actualYear || (newYear == actualYear && newWeek > actualWeek)
+      return nil
+    end
+    
+    '/' + tag + '/' + newYear.to_s + '/' + newWeek.to_s
   end
   
 end
