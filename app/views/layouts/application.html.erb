@@ -3,6 +3,7 @@
 <head>
   <title><%= @title %></title>
   <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
   <%= stylesheet_link_tag "application" %>
 
   <script type="text/javascript">
@@ -22,6 +23,13 @@
 <body>
 <div id="header">
   <a href="/"><div class="logo">Of The Week</div></a>
+  
+  <div class="search">
+    <%= form_tag "/" do %>
+      <%= text_field_tag "search_term", "", :class => 'span4' %>
+      <%= submit_tag "Search", :class => 'btn primary' %>
+    <% end %>
+  </div>
 </div>
 
 <%= yield %>
