@@ -21,7 +21,7 @@ OfTheWeek::Application.configure do
   config.assets.digest = true
   
   # sessions
-  #config.action_controller.session_store = :active_record_store
+  config.action_controller.session_store = :active_record_store
 
   # Defaults to Rails.root.join("public/assets")
   # config.assets.manifest = YOUR_PATH
@@ -40,7 +40,7 @@ OfTheWeek::Application.configure do
   # config.logger = SyslogLogger.new
 
   # Use a different cache store in production
-  #config.cache_store = :dalli_store
+  # config.cache_store = :dalli_store
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
