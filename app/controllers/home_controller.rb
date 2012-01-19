@@ -2,7 +2,11 @@ require 'flickr_fu'
 
 class HomeController < ApplicationController
   def index
-    if !params[:search_term].nil?
+    if params[:commit] == 'Random'
+      tags = Photo.select('distinct tag')
+      tag = tags[rand(tags.size - 1)].tag
+      redirect_to '/' + tag
+    elsif !params[:search_term].nil?
       redirect_to '/' + params[:search_term]
     end
     
