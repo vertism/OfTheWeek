@@ -62,7 +62,14 @@ h2 {
 		text-decoration:none;
 	}
 	
+	.photo_thumbnails_container {
+		float:left;
+		clear:both;
+		margin-bottom:20px;
+	}
+	
 	.photos_row {
+		float:left;
 		clear:both;
 		
 		.photo_thumbnail {

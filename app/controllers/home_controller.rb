@@ -5,8 +5,17 @@ class HomeController < ApplicationController
     if !params[:search_term].nil?
       redirect_to '/' + params[:search_term]
     end
+    
+    @recent = []
+    photoIDs = Activity.where(:user => session[:session_id]).select("DISTINCT(photo_id), created_at").sort_by!{|x| [ ItemForReverseSort.new(x.created_at) ]} 
+    
+    photoIDs.each_with_index do |activity, index|
+      break if index >= 14
+      @recent.push(Photo.find(activity.photo_id))
+    end
         
-    @popular = Photo.where(:year => 2012).where(:week => 3).order("views DESC").limit(18)
+    @popular = Photo.where(:year => 2012).where(:week => 3).order("views DESC").limit(14)
+    
   end
   
   def search
@@ -25,6 +34,8 @@ class HomeController < ApplicationController
       photo = getimageurl(searchterm, dates)
       
       if !photo.blank?
+        Activity.create(:user => session[:session_id], :photo => photo)
+        
         @imageURL_medium = photo.url_square
         @imageURL_large = photo.url_original
         @views = photo.views
@@ -111,4 +122,16 @@ class HomeController < ApplicationController
     '/' + tag + '/' + newYear.to_s + '/' + newWeek.to_s
   end
   
+end
+
+class ItemForReverseSort
+  def initialize( item )
+    @item = item
+  end
+  def item
+    @item
+  end
+  def <=>( target )
+    ( self.item <=> target.item ) * (-1)
+  end
 end
