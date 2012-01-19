@@ -11,7 +11,7 @@ class HomeController < ApplicationController
     end
     
     @recent = []
-    photoIDs = Activity.where(:user => session[:session_id]).select("photo_id, created_at")
+    photoIDs = Activity.where(:user => session[:current_user_id]).select("photo_id, created_at")
     photoIDs.sort_by!{|x| [ ItemForReverseSort.new(x.created_at) ]}
     photos = photoIDs.inject({}) do |hash,item|
        hash[item.photo_id]||=item.photo_id
@@ -43,7 +43,7 @@ class HomeController < ApplicationController
       photo = getimageurl(searchterm, dates)
       
       if !photo.blank?
-        Activity.create(:user => session[:session_id], :photo => photo)
+        Activity.create(:user => session[:current_user_id], :photo => photo)
         
         @imageURL_medium = photo.url_square
         @imageURL_large = photo.url_original
