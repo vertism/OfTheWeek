@@ -19,9 +19,6 @@ OfTheWeek::Application.configure do
 
   # Generate digests for assets URLs
   config.assets.digest = true
-  
-  # sessions
-  config.action_controller.session_store = :active_record_store
 
   # Defaults to Rails.root.join("public/assets")
   # config.assets.manifest = YOUR_PATH
