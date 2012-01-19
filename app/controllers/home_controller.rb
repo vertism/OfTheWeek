@@ -7,11 +7,16 @@ class HomeController < ApplicationController
     end
     
     @recent = []
-    photoIDs = Activity.where(:user => session[:session_id]).select("DISTINCT(photo_id), created_at").sort_by!{|x| [ ItemForReverseSort.new(x.created_at) ]} 
+    photoIDs = Activity.where(:user => session[:session_id]).select("photo_id, created_at")
+    photoIDs.sort_by!{|x| [ ItemForReverseSort.new(x.created_at) ]}
+    photos = photoIDs.inject({}) do |hash,item|
+       hash[item.photo_id]||=item.photo_id
+       hash 
+    end.values
     
-    photoIDs.each_with_index do |activity, index|
+    photos.each_with_index do |id, index|
       break if index >= 14
-      @recent.push(Photo.find(activity.photo_id))
+      @recent.push(Photo.find(id))
     end
         
     @popular = Photo.where(:year => 2012).where(:week => 3).order("views DESC").limit(14)
