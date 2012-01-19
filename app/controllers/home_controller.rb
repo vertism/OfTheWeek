@@ -11,20 +11,21 @@ class HomeController < ApplicationController
     end
     
     @recent = []
-    photoIDs = Activity.where(:user => session[:current_user_id]).select("photo_id, created_at")
-    photoIDs.sort_by!{|x| [ ItemForReverseSort.new(x.created_at) ]}
-    photos = photoIDs.inject({}) do |hash,item|
-       hash[item.photo_id]||=item.photo_id
-       hash 
-    end.values
+    if !request.session_options[:id].nil?
+      photoIDs = Activity.where(:user => request.session_options[:id]).select("photo_id, created_at")
+      photoIDs.sort_by!{|x| [ ItemForReverseSort.new(x.created_at) ]}
+      photos = photoIDs.inject({}) do |hash,item|
+         hash[item.photo_id]||=item.photo_id
+         hash 
+      end.values
     
-    photos.each_with_index do |id, index|
-      break if index >= 14
-      @recent.push(Photo.find(id))
+      photos.each_with_index do |id, index|
+        break if index >= 14
+        @recent.push(Photo.find(id))
+      end
     end
         
     @popular = Photo.where(:year => 2012).where(:week => 3).order("views DESC").limit(14)
-    
   end
   
   def search
@@ -43,7 +44,7 @@ class HomeController < ApplicationController
       photo = getimageurl(searchterm, dates)
       
       if !photo.blank?
-        Activity.create(:user => session[:current_user_id], :photo => photo)
+        Activity.create(:user => request.session_options[:id], :photo => photo)
         
         @imageURL_medium = photo.url_square
         @imageURL_large = photo.url_original
