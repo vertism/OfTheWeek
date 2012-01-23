@@ -1,6 +1,8 @@
 require 'flickr_fu'
 
 class HomeController < ApplicationController
+  include HomeHelper
+  
   def index
     if params[:commit] == 'Random'
       tags = Photo.select('distinct tag')
@@ -25,13 +27,13 @@ class HomeController < ApplicationController
       end
     end
         
-    @popular = Photo.where(:year => 2012).where(:week => 3).order("views DESC").limit(14)
+    @popular = Photo.where(:year => getYear).where(:week => getWeek).order("views DESC").limit(14)
   end
   
   def search
     searchterm = params[:search_term]
-    year = params[:year] || Time.now.to_date.cwyear
-    week = params[:week] || Time.now.to_date.cweek
+    year = params[:year] || getYear
+    week = params[:week] || getWeek
     dates = getDates(year, week)
     
     if !dates.nil?    
@@ -95,41 +97,6 @@ class HomeController < ApplicationController
     end
     
     photo
-  end
-  
-  def getDates(year, week)
-    begin 
-      year = year.to_i
-      week = week.to_i
-      
-      minDate = Date.commercial(year, week, 1) - 7
-      maxDate = Date.commercial(year, week, 1)
-      
-      if Time.now.to_date.cwyear == year && Time.now.to_date.cweek == week
-        term = ""
-      else
-        term = maxDate.strftime('%d %b %Y')
-      end
-    
-      {:week => week, :year => year, :min => minDate.strftime('%s'), :max => maxDate.strftime('%s'), :term => term}
-    rescue
-      nil
-    end
-  end
-  
-  def getURL(tag, currentYear, currentWeek, offset) 
-    newDate = Date.commercial(currentYear.to_i, currentWeek.to_i) + (offset * 7)
-    newWeek = newDate.cweek
-    newYear = newDate.cwyear
-    
-    actualYear = Time.now.to_date.cwyear
-    actualWeek = Time.now.to_date.cweek
-    
-    if newYear > actualYear || (newYear == actualYear && newWeek > actualWeek)
-      return nil
-    end
-    
-    '/' + tag + '/' + newYear.to_s + '/' + newWeek.to_s
   end
   
 end
