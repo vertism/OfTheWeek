@@ -17,11 +17,16 @@ img {
 }
 
 h1 {
+	margin-top:20px;
+}
+
+h1, h3 {
 	color:#0C5DA5;
 }
 
 h2 {
 	color:#00AC6B;
+ 	margin:20px 0 10px 0;
 }
 
 #header {
@@ -30,7 +35,6 @@ h2 {
 	margin:3px 0 3px 0;
 	border-bottom:3px dotted black;
 	line-height:38px;
-	margin-bottom:20px;
 	
 	a {
 		text-decoration:none;
@@ -81,16 +85,25 @@ h2 {
 		}
 	}
 
+	.mainImageHolder {
+		overflow:auto;
+		
+		.mainImage {
+		  float:left;
+			margin:5px 0 5px 0;
+		  border:2px solid black;
+		  clear:both;
+		}
 
-	.mainimage {
-	  float:left;
-		margin:10px 0 15px 0;
-	  border:2px solid black;
-	  clear:both;
+		.mainImageData {
+		  float:left;
+		  clear:both;
+		}
 	}
+}
 
-	.mainImageData {
-	  float:left;
-	  clear:both;
-	}
+.divider {
+	overflow:auto;
+	border-bottom:3px dotted black;
+	margin-top:20px;
 }

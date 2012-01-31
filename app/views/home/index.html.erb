@@ -28,7 +28,8 @@
         <div class="photos_row">
       <% end %>
       <span class="photo_thumbnail">
-        <a href="<%= request.url + photo.tag + '/' + photo.year.to_s + '/' + photo.week.to_s %>">
+        <!--<a href="<%= request.url + photo.tag + '/' + photo.year.to_s + '/' + photo.week.to_s %>">-->
+        <a href="<%= request.url + 'p/' + photo.id.to_s %>">
           <img src="<%= photo.url_thumbnail %>">
         </a>
       </span>

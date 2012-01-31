@@ -28,8 +28,8 @@ module HomeHelper
     end
   end
 
-  def getURL(tag, currentYear, currentWeek, offset) 
-    newDate = Date.commercial(currentYear.to_i, currentWeek.to_i) + (offset * 7)
+  def getURL(photo, offset) 
+    newDate = Date.commercial(photo.year.to_i, photo.week.to_i) + (offset * 7)
     newWeek = newDate.cweek
     newYear = newDate.cwyear
 
@@ -40,6 +40,6 @@ module HomeHelper
       return nil
     end
 
-    '/' + tag + '/' + newYear.to_s + '/' + newWeek.to_s
+    '/' + photo.tag + '/' + newYear.to_s + '/' + newWeek.to_s
   end
 end
