@@ -1,45 +1,17 @@
+require 'otw_date'
+
 module HomeHelper
   
-  def getYear()
-    Time.now.to_date.cwyear
-  end
-  
-  def getWeek()
-    Time.now.to_date.cweek
-  end
-        
-  def getDates(year, week)
-    begin 
-      year = year.to_i
-      week = week.to_i
-
-      minDate = Date.commercial(year, week, 1) - 7
-      maxDate = Date.commercial(year, week, 1)
-
-      if Time.now.to_date.cwyear == year && Time.now.to_date.cweek == week
-        term = ""
-      else
-        term = maxDate.strftime('%d %b %Y')
-      end
-
-      {:week => week, :year => year, :min => minDate.strftime('%s'), :max => maxDate.strftime('%s'), :term => term}
-    rescue
-      nil
-    end
-  end
-
   def getURL(photo, offset) 
     newDate = Date.commercial(photo.year.to_i, photo.week.to_i) + (offset * 7)
     newWeek = newDate.cweek
     newYear = newDate.cwyear
 
-    actualYear = getYear
-    actualWeek = getWeek
-
-    if newYear > actualYear || (newYear == actualYear && newWeek > actualWeek)
+    if newYear > OTWDate.currentYear || (newYear == OTWDate.currentYear && newWeek > OTWDate.currentWeek)
       return nil
     end
 
-    '/' + photo.tag + '/' + newYear.to_s + '/' + newWeek.to_s
+    '/s/' + photo.tag + '/' + newYear.to_s + '/' + newWeek.to_s
   end
+  
 end

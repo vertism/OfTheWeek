@@ -1,7 +1,9 @@
 OfTheWeek::Application.routes.draw do
   root :to => 'home#index'
   
-  match "/p/:photo_id" => 'home#load'
-  match "/:search_term" => 'home#search'
-  match "/:search_term/:year/:week" => 'home#search'
+  match "/:search_term" => 'photo#search'
+  match "/s/:search_term" => 'photo#search'
+  match "/s/:search_term/:year/:week" => 'photo#search'
+  match "/p/:photo_id" => 'photo#load'
+  
 end

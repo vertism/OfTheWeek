@@ -10,7 +10,7 @@
         <div class="photos_row">
       <% end %>
       <span class="photo_thumbnail">
-        <a href="<%= request.url + photo.tag %>">
+        <a href="<%= request.url + 's/' + photo.tag %>">
           <img src="<%= photo.url_thumbnail %>">
         </a>
       </span>
@@ -28,7 +28,7 @@
         <div class="photos_row">
       <% end %>
       <span class="photo_thumbnail">
-        <!--<a href="<%= request.url + photo.tag + '/' + photo.year.to_s + '/' + photo.week.to_s %>">-->
+        <!--<a href="<%= request.url + 's/' + photo.tag + '/' + photo.year.to_s + '/' + photo.week.to_s %>">-->
         <a href="<%= request.url + 'p/' + photo.id.to_s %>">
           <img src="<%= photo.url_thumbnail %>">
         </a>
