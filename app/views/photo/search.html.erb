@@ -1,0 +1,39 @@
+<div id="container">
+  <% if @photo.nil? %>
+    Sorry, there are no results for your search 
+  <% else %>
+    <h2>
+      <%= @photo.tag + ' of the week' %>
+      <% if !@photo.term.empty? %>
+        (<%= @photo.term %>)
+      <% end %>
+    </h2>
+    
+    <div class="mainImageData">
+      <% 
+        previousWeekURL = getURL(@photo, -1)
+        nextWeekURL = getURL(@photo, 1) 
+      %>
+      <a href="<%= previousWeekURL %>">&lt;&lt; previous week</a>&nbsp; |&nbsp;
+      
+      <% if nextWeekURL.nil? %>
+        next week &gt;&gt;
+      <% else %>
+        <a href="<%= nextWeekURL %>">next week &gt;&gt;</a>   
+      <% end %>
+    </div>
+    
+    <div class="mainImageHolder">
+      <div class="mainImage">
+        <a href="<%= @photo.url_original %>">
+          <img src="<%= @photo.url_square %>" />
+        </a>
+      </div>
+    </div>
+    
+    <!--<div class="divider"></div>
+    <h2>More</h2>-->
+     
+  <% end %>
+</div>
+
